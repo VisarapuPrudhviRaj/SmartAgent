@@ -31,14 +31,21 @@ public class DownloadFile extends AsyncTask<String, Void, String> {
     LinearLayout linearLayout;
     DBHelper dbHelper;
     String file_id;
+    ViewDownloadListener listener;
 
 
-    public DownloadFile(Context context, TextView textView, LinearLayout linearLayout, DBHelper dbHelper, String file_id) {
+
+    public DownloadFile(Context context, TextView textView, LinearLayout linearLayout, DBHelper dbHelper, String file_id,ViewDownloadListener listener) {
         this.context = context;
         this.textView = textView;
         this.linearLayout = linearLayout;
         this.dbHelper = dbHelper;
         this.file_id = file_id;
+        this.listener = listener;
+    }
+
+    public interface ViewDownloadListener{
+        void viewDownClickListner();
     }
 
     private String downloadfile(String urlLink, String fileName) {

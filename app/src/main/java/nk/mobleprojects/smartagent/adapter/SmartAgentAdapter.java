@@ -1,5 +1,6 @@
 package nk.mobleprojects.smartagent.adapter;
 
+import android.app.Activity;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
@@ -27,15 +28,14 @@ import nk.mobleprojects.smartagent.utils.Helper;
  * Created by Prudhvi on 07-08-2019.
  */
 
-public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.MyViewHolder> {
+public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.MyViewHolder> implements DownloadFile.ViewDownloadListener {
 
-    Context context;
+    Activity context;
     List<SmartAgentPojo> list;
-
     DBHelper dbHelper;
 
 
-    public SmartAgentAdapter(Context context, List<SmartAgentPojo> list) {
+    public SmartAgentAdapter(Activity context, List<SmartAgentPojo> list) {
         this.context = context;
         this.list = list;
         dbHelper = new DBHelper(context);
@@ -58,7 +58,9 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
         holder.tv_filesize.setText("SizeInBytes :" + agentPojo.getSizeInBytes());
         holder.tv_fileType.setText(agentPojo.getType());
 
+
         if (agentPojo.getFilePath().equals("")) {
+            holder.ll_color.setBackgroundColor(context.getResources().getColor(android.R.color.holo_red_dark));
             holder.tv_filesucess.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
             holder.tv_filesucess.setText("Download");
             holder.tv_filesucess.setOnClickListener(new View.OnClickListener() {
@@ -69,6 +71,7 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
             });
 
         } else {
+            holder.ll_color.setBackgroundColor(context.getResources().getColor(android.R.color.holo_green_dark));
             holder.tv_filesucess.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
             holder.tv_filesucess.setText("View");
             holder.tv_filesucess.setOnClickListener(new View.OnClickListener() {
@@ -113,7 +116,7 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
                 "/" + Helper.FOLDER_NAME + "/" + fileName);
         if (!apkfile.exists()) {
             Toast.makeText(context, "File Downloading...", Toast.LENGTH_LONG).show();
-            DownloadFile downloadApk = new DownloadFile(context, textView, linearLayout, dbHelper, file_id);
+            DownloadFile downloadApk = new DownloadFile(context, textView, linearLayout, dbHelper, file_id,this);
             downloadApk.execute(downloadUrl, fileName);
         } else {
             //File Size Check
@@ -126,6 +129,11 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
     @Override
     public int getItemCount() {
         return list.size();
+    }
+
+    @Override
+    public void viewDownClickListner() {
+
     }
 
 

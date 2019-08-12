@@ -5,6 +5,9 @@ import android.os.Environment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -58,6 +61,25 @@ public class SmartAgentActivity extends BaseActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.tool_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                serverHit();
+                break;
+            default:
+                break;
+        }
+        return true;
+    }
+
     private String checkFileExist(String fileName) {
 
         File sdcard = new File(Environment.getExternalStorageDirectory() + "/" + Helper.FOLDER_NAME);
@@ -103,7 +125,7 @@ public class SmartAgentActivity extends BaseActivity {
                                         dbHelper.insertintoTable(DBTables.SmartProject.TABLE_NAME,
                                                 DBTables.SmartProject.cols, new String[]{result.getString("id"),
                                                         result.getString("name"), result.getString("type"),
-                                                        result.getString("sizeInBytes"), result.getString("cdn_path"),file_path , "1"});
+                                                        result.getString("sizeInBytes"), result.getString("cdn_path"), file_path, "1"});
                                     }
 
 
