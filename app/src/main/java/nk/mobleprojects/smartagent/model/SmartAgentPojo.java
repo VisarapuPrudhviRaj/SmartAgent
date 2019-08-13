@@ -1,10 +1,9 @@
 package nk.mobleprojects.smartagent.model;
 
-/**
- * Created by Prudhvi on 09-08-2019.
- */
 
-public class SmartAgentPojo {
+import java.io.Serializable;
+
+public class SmartAgentPojo implements Serializable {
 
     String id;
     String name;

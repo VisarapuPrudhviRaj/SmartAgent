@@ -2,10 +2,10 @@ package nk.mobleprojects.smartagent.utils;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Environment;
-import android.widget.LinearLayout;
-import android.widget.TextView;
+import android.support.v4.content.LocalBroadcastManager;
 import android.widget.Toast;
 
 import java.io.File;
@@ -17,21 +17,16 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-
-public class DownloadFile extends AsyncTask<String, Void, String> {
+public class DownloadURLFile extends AsyncTask<String, Void, String> {
 
     public ProgressDialog pd;
     Context context;
-    TextView textView;
-    LinearLayout linearLayout;
     DBHelper dbHelper;
     String file_id;
 
 
-    public DownloadFile(Context context, TextView textView, LinearLayout linearLayout, DBHelper dbHelper, String file_id) {
+    public DownloadURLFile(Context context, DBHelper dbHelper, String file_id) {
         this.context = context;
-        this.textView = textView;
-        this.linearLayout = linearLayout;
         this.dbHelper = dbHelper;
         this.file_id = file_id;
 
@@ -83,7 +78,7 @@ public class DownloadFile extends AsyncTask<String, Void, String> {
 
     @Override
     protected void onPreExecute() {
-        showProgressDialog("Please Wait...File Downloading", context);
+//        showProgressDialog("Please Wait...File Downloading", context);
     }
 
     @Override
@@ -92,9 +87,9 @@ public class DownloadFile extends AsyncTask<String, Void, String> {
     }
 
     protected void onPostExecute(String result) {
-        closeProgressDialog();
+//        closeProgressDialog();
         if (result.startsWith("done")) {
-            Toast.makeText(context, "Downloaded Done", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "file downloaded!", Toast.LENGTH_SHORT).show();
             //View
             //DB Update
             dbHelper.updateByValues(DBTables.SmartProject.TABLE_NAME,
@@ -102,15 +97,16 @@ public class DownloadFile extends AsyncTask<String, Void, String> {
                     new String[]{"1", result.split("\\,")[1].trim()},
                     new String[]{DBTables.SmartProject.id},
                     new String[]{file_id});
-            textView.setTextColor(context.getResources().getColor(android.R.color.holo_green_dark));
-            linearLayout.setBackgroundColor(context.getResources().getColor(android.R.color.holo_green_dark));
-            textView.setText("View");
-
+            //update Adapter
+            Intent pushNotification = new Intent(Helper.FILEDOWLOADED);
+            pushNotification.putExtra("Downloaded", "DONE");
+            LocalBroadcastManager.getInstance(context).sendBroadcast(pushNotification);
         } else {
             //Retry
-            textView.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
-            linearLayout.setBackgroundColor(context.getResources().getColor(android.R.color.holo_red_dark));
-            textView.setText("Retry");
+            //update Adapter
+            Intent pushNotification = new Intent(Helper.FILEDOWLOADED);
+            pushNotification.putExtra("DownloadedFailed", "RETRY");
+            LocalBroadcastManager.getInstance(context).sendBroadcast(pushNotification);
         }
     }
 

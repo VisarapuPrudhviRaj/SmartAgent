@@ -3,7 +3,7 @@
     package="nk.mobleprojects.smartagent">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
@@ -22,7 +22,31 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".activities.SmartAgentActivity"/>
+        <activity android:name=".activities.SmartAgentActivity" />
+
+        <service
+            android:name=".service.SmartAgentService"
+            android:enabled="true"></service>
+
+        <receiver
+            android:name=".broadcastrecevier.DownloadBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            android:label="RestartServiceWhenStopped"></receiver>
+
+        <receiver
+            android:name=".broadcastrecevier.FilePathBroadCastReceiver"
+            android:enabled="true"></receiver>
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

@@ -17,10 +17,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by nagendra on 22/3/17.
- */
-
 
 public class SQLiteHelper extends SQLiteOpenHelper {
     public static final String UID = "UID";

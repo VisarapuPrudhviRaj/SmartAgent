@@ -10,9 +10,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
-/**
- * Created by nagendra on 22/12/16.
- */
+
 public class PrefManger {
 
 

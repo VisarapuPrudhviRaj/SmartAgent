@@ -8,7 +8,7 @@
     <LinearLayout
         android:id="@+id/ll_color"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_alignParentLeft="true"
         android:background="@android:color/holo_red_dark"
         android:orientation="horizontal"
@@ -35,8 +35,8 @@
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@+id/tv_fileType"
                     android:text="File Name "
+                    android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textColor="#040404"
-                   android:textAppearance="@style/TextAppearance.AppCompat.Title"
                     android:textStyle="bold"
                     android:typeface="sans" />
 
@@ -49,11 +49,21 @@
                     android:layout_marginRight="5dip"
                     android:gravity="right"
                     android:text="IMAGE"
-                    android:textColor="#FF5722"
                     android:textAppearance="@style/TextAppearance.AppCompat.Subhead"
+                    android:textColor="#FF5722"
                     android:textStyle="bold" />
             </RelativeLayout>
 
+
+            <TextView
+                android:id="@+id/tv_filepath"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dip"
+                android:text=""
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#343434"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/tv_filesize"
@@ -61,8 +71,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dip"
                 android:text="File Size: 1024 bytes"
-                android:textColor="#343434"
-                android:textAppearance="@style/TextAppearance.AppCompat.Small" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:textColor="#343434" />
 
         </LinearLayout>
 
@@ -74,7 +84,15 @@
             android:gravity="bottom|right"
             android:text="Download/Retry/View"
             android:textColor="#E91E63"
-            android:textSize="15dip" />
+            android:textSize="15dip"
+            android:visibility="gone" />
+
+        <ProgressBar
+            android:id="@+id/progessbar"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:layout_gravity="right|bottom"
+            android:gravity="bottom|end" />
 
 
     </FrameLayout>

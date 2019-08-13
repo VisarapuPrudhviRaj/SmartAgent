@@ -7,14 +7,14 @@ import android.os.Environment;
 
 import java.io.File;
 
-/**
- * Created by Prudhvi on 09-08-2019.
- */
+
 
 public class Helper {
 
     public static final String url = "https://demo6977317.mockable.io/fetch_config";
     public static final String FOLDER_NAME ="SMART_AGENT";
+    public static final String FILEDOWLOADED ="FILEDOWNLOAD";
+    public static final String FILEDOWLOADEDFAILED ="FILEDOWLOADEDFAILED";
 
 
     public static boolean isNetworkAvailable(Context context) {
