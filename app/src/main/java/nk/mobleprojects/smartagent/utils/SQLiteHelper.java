@@ -51,9 +51,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
 
     }
 
-
-
-
     // insertion data
 
     /**
@@ -228,30 +225,5 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         return CREATE_TABLE;
     }
 
-    /**
-     * This method is used to convert cursor to list JSON Array.
-     *
-     * @param c-cursor.
-     * @return
-     */
-    public List<JSONObject> cursorToListJson(Cursor c) {
-        List<JSONObject> rowList = new ArrayList<JSONObject>();
-        JSONObject jobjtemp = null;
-        while (c.moveToNext()) {
-
-            for (int i = 0; i < c.getColumnCount(); i++) {
-                jobjtemp = new JSONObject();
-                try {
-                    jobjtemp.put(c.getColumnName(i), c.getString(i));
-                } catch (JSONException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-            rowList.add(jobjtemp);
-        }
-        c.close();
-        return rowList;
-    }
 
 }

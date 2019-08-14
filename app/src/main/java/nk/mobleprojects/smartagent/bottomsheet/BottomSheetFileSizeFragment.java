@@ -16,7 +16,6 @@ import nk.mobleprojects.smartagent.model.SmartAgentPojo;
 
 public class BottomSheetFileSizeFragment extends BottomSheetDialogFragment {
 
-    String path;
     SmartAgentPojo smartAgentPojo;
 
     public BottomSheetFileSizeFragment() {

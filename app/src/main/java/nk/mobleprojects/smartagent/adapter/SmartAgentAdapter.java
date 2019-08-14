@@ -14,7 +14,6 @@ import java.util.List;
 
 import nk.mobleprojects.smartagent.R;
 import nk.mobleprojects.smartagent.model.SmartAgentPojo;
-import nk.mobleprojects.smartagent.presenter.SmartAdapaterPresenter;
 import nk.mobleprojects.smartagent.utils.DBHelper;
 
 
@@ -25,7 +24,6 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
     List<SmartAgentPojo> list;
     DBHelper dbHelper;
     ViewDownloadListener listener;
-    SmartAdapaterPresenter smartAdapaterPresenter;
 
 
     public SmartAgentAdapter(Activity context, List<SmartAgentPojo> list, ViewDownloadListener listener) {
@@ -33,7 +31,6 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
         this.list = list;
         dbHelper = new DBHelper(context);
         this.listener = listener;
-
     }
 
 
@@ -42,7 +39,6 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
     @Override
     public SmartAgentAdapter.MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.list_row, parent, false);
-        smartAdapaterPresenter = new SmartAdapaterPresenter(context);
         return new MyViewHolder(view);
     }
 

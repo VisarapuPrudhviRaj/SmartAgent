@@ -50,21 +50,4 @@ public class DBHelper extends SQLiteHelper {
     }
 
 
-    public List<List<String>> cursorToListArrary(Cursor c) {
-        List<List<String>> rowList = new ArrayList<List<String>>();
-        while (c.moveToNext()) {
-            List<String> arr = new ArrayList<String>();
-            for (int i = 0; i < c.getColumnCount(); i++) {
-                arr.add(c.getString(i));
-            }
-            rowList.add(arr);
-        }
-        return rowList;
-    }
-
-
-
-
-
-
 }

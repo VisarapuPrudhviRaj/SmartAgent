@@ -1,12 +1,18 @@
 package nk.mobleprojects.smartagent.utils;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Environment;
+import android.support.v4.content.FileProvider;
+import android.widget.Toast;
 
 import java.io.File;
 
+import nk.mobleprojects.smartagent.BuildConfig;
 
 
 public class Helper {
@@ -42,4 +48,35 @@ public class Helper {
             e.printStackTrace();
         }
     }
+
+    public void viewFile(String file_path,Context context) {
+        File file = new File(file_path);
+        // Uri url = Uri.fromFile(file);
+        Uri url = FileProvider.getUriForFile(context,
+                BuildConfig.APPLICATION_ID + ".provider",
+                file);
+        Intent intent = new Intent(Intent.ACTION_VIEW, url);
+        if (file_path.contains(".jpg") || file_path.contains(".jpeg") || file_path.contains(".png")) {
+            intent.setDataAndType(url, "image/jpeg");
+        } else if (file_path.contains(".svg")) {
+            //intent.setDataAndType(url, "image/svg");
+        } else if (file_path.contains(".3gp") || file_path.contains(".mpg") ||
+                file_path.contains(".mpeg") || file_path.contains(".mpe") ||
+                file_path.contains(".mp4") || file_path.contains(".avi")) {
+            // Video files
+            intent.setDataAndType(url, "video/*");
+        } else {
+            // intent.setDataAndType(url, "*/*");
+        }
+        intent.addCategory(Intent.CATEGORY_APP_BROWSER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        try {
+            context.startActivity(intent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(context, e.getMessage().trim(), Toast.LENGTH_LONG).show();
+        }
+
+
+    }
+
 }
