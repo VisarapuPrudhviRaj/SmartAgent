@@ -6,6 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gef.permission.READ_GSERVICES" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+
 
     <application
         android:allowBackup="true"
@@ -14,7 +17,7 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/NoActionBar">
-        <activity android:name=".activities.SplashActivity">
+        <activity android:name=".mvp.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -22,7 +25,7 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".activities.SmartAgentActivity" />
+        <activity android:name=".mvp.SmartAgentActivity" />
 
         <service
             android:name=".service.SmartAgentService"
@@ -32,11 +35,19 @@
             android:name=".broadcastrecevier.DownloadBroadcastReceiver"
             android:enabled="true"
             android:exported="true"
-            android:label="RestartServiceWhenStopped"></receiver>
+            android:label="RestartServiceWhenStopped">
 
-        <receiver
-            android:name=".broadcastrecevier.FilePathBroadCastReceiver"
-            android:enabled="true"></receiver>
+            <intent-filter>
+                <action android:name="nk.mobleprojects.ActivityRecognition.RestartSensor"/>
+            </intent-filter>
+        </receiver>
+        <receiver android:name = ".broadcastrecevier.InternetBroadcastReceiver">
+            <intent-filter>
+                <action android:name = "android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name = "android.net.wifi.WIFI_STATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
 
         <provider
             android:name="android.support.v4.content.FileProvider"

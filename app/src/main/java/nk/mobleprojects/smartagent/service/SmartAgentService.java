@@ -1,10 +1,13 @@
 package nk.mobleprojects.smartagent.service;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,15 +15,13 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.List;
 
-import nk.mobleprojects.smartagent.broadcastrecevier.DownloadBroadcastReceiver;
 import nk.mobleprojects.smartagent.utils.DBHelper;
 import nk.mobleprojects.smartagent.utils.DBTables;
-import nk.mobleprojects.smartagent.utils.DownloadFile;
 import nk.mobleprojects.smartagent.utils.DownloadURLFile;
 import nk.mobleprojects.smartagent.utils.Helper;
 
 public class SmartAgentService extends Service {
-    DownloadFile file;
+
     Context applicationContext;
     DBHelper dbHelper;
 
@@ -42,14 +43,15 @@ public class SmartAgentService extends Service {
     public void onCreate() {
         super.onCreate();
         applicationContext = getApplicationContext();
-//        android.os.Debug.waitForDebugger();
+        dbHelper = new DBHelper(this);
+        checkDB();
+
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
-        dbHelper = new DBHelper(this);
-        checkDB();
+
         return START_STICKY;
     }
 
@@ -58,7 +60,12 @@ public class SmartAgentService extends Service {
                 new String[]{DBTables.SmartProject.downloadStatus}, new String[]{"0"});
         if (ll_data.size() > 0) {
             //id, name, type,  sizeInBytes, cdn_path, filePath,downloadStatus
-            downloadFile(ll_data.get(0).get(2).trim(), ll_data.get(0).get(5).trim(), ll_data.get(0).get(1).trim());
+            if (Helper.isNetworkAvailable(applicationContext)) {
+                downloadFile(ll_data.get(0).get(2).trim(), ll_data.get(0).get(5).trim(), ll_data.get(0).get(1).trim());
+
+            } else {
+                Toast.makeText(applicationContext, "No Network available", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 
@@ -83,10 +90,27 @@ public class SmartAgentService extends Service {
 
     @Override
     public void onDestroy() {
-        super.onDestroy();
+
         Log.i("onDestroy", "ondestroy!");
-        Intent broadcastIntent = new Intent(this, DownloadBroadcastReceiver.class);
+        super.onDestroy();
+
+        Intent broadcastIntent = new Intent("nk.mobleprojects.ActivityRecognition.RestartSensor");
         sendBroadcast(broadcastIntent);
-       // checkDB();
+        // checkDB();
+    }
+
+    @Override
+    public void onTaskRemoved(Intent rootIntent) {
+        Intent intent = new Intent(getApplicationContext(), SmartAgentService.class);
+        PendingIntent pendingIntent = PendingIntent.getService(this, 1, intent, PendingIntent.FLAG_ONE_SHOT);
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.RTC_WAKEUP, SystemClock.elapsedRealtime() + 5000, pendingIntent);
+        super.onTaskRemoved(rootIntent);
+
+    }
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
     }
 }

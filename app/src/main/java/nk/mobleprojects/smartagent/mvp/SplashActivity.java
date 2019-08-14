@@ -1,4 +1,4 @@
-package nk.mobleprojects.smartagent.activities;
+package nk.mobleprojects.smartagent.mvp;
 
 import android.Manifest;
 import android.content.Intent;

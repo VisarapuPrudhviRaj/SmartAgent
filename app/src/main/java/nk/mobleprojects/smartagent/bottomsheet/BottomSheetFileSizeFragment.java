@@ -62,10 +62,11 @@ public class BottomSheetFileSizeFragment extends BottomSheetDialogFragment {
         tv_filesize.setText(fileSize(smartAgentPojo.getFilePath()));
 
         if (smartAgentPojo.getSizeInBytes().equals(fileSize(smartAgentPojo.getFilePath()))) {
-
             iv_show.setVisibility(View.VISIBLE);
+            iv_show.setImageDrawable(getResources().getDrawable(R.drawable.ic_done));
         } else {
-            iv_show.setVisibility(View.GONE);
+            iv_show.setVisibility(View.VISIBLE);
+            iv_show.setImageDrawable(getResources().getDrawable(R.drawable.ic_not_matched));
         }
 
 
