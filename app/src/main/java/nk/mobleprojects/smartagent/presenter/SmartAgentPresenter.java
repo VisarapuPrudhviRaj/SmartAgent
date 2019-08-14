@@ -39,7 +39,7 @@ public class SmartAgentPresenter {
         dbHelper = new DBHelper(context);
     }
 
-    private String checkFileExist(String fileName) {
+    public String checkFileExist(String fileName) {
 
         File sdcard = new File(Environment.getExternalStorageDirectory() + "/" + Helper.FOLDER_NAME);
         if (!sdcard.exists()) {

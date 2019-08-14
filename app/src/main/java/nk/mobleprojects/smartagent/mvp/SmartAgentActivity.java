@@ -91,6 +91,7 @@ public class SmartAgentActivity extends BaseActivity implements SmartAgentAdapte
         }
     }
 
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -127,7 +128,11 @@ public class SmartAgentActivity extends BaseActivity implements SmartAgentAdapte
 
         registerReceiver(internetReceiver,
                 new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+
     }
+
+
 
     @Override
     protected void onPause() {
@@ -135,6 +140,12 @@ public class SmartAgentActivity extends BaseActivity implements SmartAgentAdapte
         LocalBroadcastManager.getInstance(this).unregisterReceiver(broadcastReceiver);
         unregisterReceiver(internetReceiver);
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        loadData();
     }
 
     @Override
@@ -208,14 +219,29 @@ public class SmartAgentActivity extends BaseActivity implements SmartAgentAdapte
 
         if (db_data.size() > 0) {
             for (int i = 0; i < db_data.size(); i++) {
+
                 SmartAgentPojo smartAgentPojo = new SmartAgentPojo();
                 smartAgentPojo.setId(db_data.get(i).get(1));
                 smartAgentPojo.setName(db_data.get(i).get(2));
                 smartAgentPojo.setType(db_data.get(i).get(3));
                 smartAgentPojo.setSizeInBytes(db_data.get(i).get(4));
                 smartAgentPojo.setCdn_path(db_data.get(i).get(5));
-                smartAgentPojo.setFilePath(db_data.get(i).get(6));
-                smartAgentPojo.setDownloadStatus(db_data.get(i).get(7));
+
+                if (smartAgentPresenter.checkFileExist(db_data.get(i).get(2).trim().trim()).equals("")){
+
+                    dbHelper.updateByValues(DBTables.SmartProject.TABLE_NAME,
+                            new String[]{DBTables.SmartProject.downloadStatus, DBTables.SmartProject.filePath},
+                            new String[]{"0", ""},
+                            new String[]{DBTables.SmartProject.id},
+                            new String[]{db_data.get(i).get(1)});
+                    smartAgentPojo.setFilePath("");
+                    smartAgentPojo.setDownloadStatus("0");
+                }else {
+                    smartAgentPojo.setFilePath(db_data.get(i).get(6));
+                    smartAgentPojo.setDownloadStatus(db_data.get(i).get(7));
+                }
+
+
                 list.add(smartAgentPojo);
             }
             adapter.notifyDataSetChanged();

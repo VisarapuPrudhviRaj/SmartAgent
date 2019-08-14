@@ -56,6 +56,7 @@ public class SmartAgentAdapter extends RecyclerView.Adapter<SmartAgentAdapter.My
 
         if (agentPojo.getFilePath().equals("")) {
             holder.tv_filepath.setVisibility(View.GONE);
+            holder.progessbar.setVisibility(View.VISIBLE);
             holder.ll_color.setBackgroundColor(context.getResources().getColor(android.R.color.holo_red_dark));
             holder.tv_filesucess.setTextColor(context.getResources().getColor(android.R.color.holo_red_dark));
             holder.tv_filesucess.setText("Download");
